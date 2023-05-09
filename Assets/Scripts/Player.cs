@@ -6,7 +6,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float PlayerSpeed = 60f;
+    private float PlayerSpeed = 20f;
     private bool isWalking = false;
     private void Update()
     {
