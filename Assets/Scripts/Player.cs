@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -9,18 +10,31 @@ public class Player : MonoBehaviour
     private float PlayerSpeed = 20f;
     private bool isWalking = false;
     [SerializeField] private GameInput m_GameInput;
+    [SerializeField] private float playerRadious = 30f;
+    [SerializeField] private float playerHeight = 30f;
 
     private void Update()
     {
         Vector2 inputVector = m_GameInput.GetMovementVectorNormalized();
         Debug.Log("Input "+ inputVector);
-        Vector3 move = new Vector3(inputVector.x, 0f, inputVector.y);
-        move = move * Time.deltaTime * PlayerSpeed;
-        isWalking = move != Vector3.zero;
-        Debug.Log("IsWalking" + isWalking);
-        transform.position += move;
-        //transform.forward = Vector3.Slerp(transform.forward, move, Time.deltaTime * PlayerSpeed/10);
+        if (Math.Abs(inputVector.x) > 0.5 || Math.Abs(inputVector.y) > 0.5)
+        {
+            Vector3 move = new Vector3(inputVector.x, 0f, inputVector.y);
+            move = move * Time.deltaTime * PlayerSpeed;
+            isWalking = move != Vector3.zero;
+
+            float moveDistance = Time.deltaTime * PlayerSpeed;
+            Debug.Log("IsWalking" + isWalking + " move " + move + " moveDistance " + moveDistance);
+            bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadious, move, moveDistance);
+            if (canMove)
+            {
+                transform.position += move;
+                //Debug.DrawRay(transform.position, move*100, Color.red);
+            }
+        }
     }
+
+
 
     public bool IsWalking()
     {
