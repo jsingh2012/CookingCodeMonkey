@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private float PlayerSpeed = 20f;
     private bool isWalking = false;
     [SerializeField] private GameInput m_GameInput;
+
     private void Update()
     {
         Vector2 inputVector = m_GameInput.GetMovementVectorNormalized();
