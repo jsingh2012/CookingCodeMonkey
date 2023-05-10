@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float playerRadious = 30f;
     [SerializeField] private float playerHeight = 30f;
 
-    private void Update()
+    private void FixedUpdate()
     {
         Vector2 inputVector = m_GameInput.GetMovementVectorNormalized();
         Debug.Log("Input "+ inputVector);
@@ -26,10 +26,28 @@ public class Player : MonoBehaviour
             float moveDistance = Time.deltaTime * PlayerSpeed;
             Debug.Log("IsWalking" + isWalking + " move " + move + " moveDistance " + moveDistance);
             bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadious, move, moveDistance);
-            if (canMove)
+            if (!canMove)
+            {
+                Vector3 moveX = new Vector3(move.x, 0, 0).normalized;
+                canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadious, moveX, moveDistance);
+                if (canMove)
+                {
+                    transform.position += moveX;
+                    Debug.DrawRay(transform.position, move * 100, Color.red);
+                }
+
+                Vector3 moveZ = new Vector3(0, 0, move.z).normalized;
+                canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadious, moveZ, moveDistance);
+                if (canMove)
+                {
+                    transform.position += moveZ;
+                    Debug.DrawRay(transform.position, move * 100, Color.red);
+                }
+            }
+            else
             {
                 transform.position += move;
-                //Debug.DrawRay(transform.position, move*100, Color.red);
+                Debug.DrawRay(transform.position, move*100, Color.red);
             }
         }
     }
