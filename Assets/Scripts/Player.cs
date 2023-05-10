@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
         isWalking = move != Vector3.zero;
         Debug.Log("IsWalking" + isWalking);
         transform.position += move;
-        transform.forward = Vector3.Slerp(transform.forward, move, Time.deltaTime * PlayerSpeed/10);
+        //transform.forward = Vector3.Slerp(transform.forward, move, Time.deltaTime * PlayerSpeed/10);
     }
 
     public bool IsWalking()
