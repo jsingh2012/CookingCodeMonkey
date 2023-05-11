@@ -12,11 +12,44 @@ public class Player : MonoBehaviour
     [SerializeField] private GameInput m_GameInput;
     [SerializeField] private float playerRadious = 30f;
     [SerializeField] private float playerHeight = 30f;
+    [SerializeField] private LayerMask layerMask;
 
-    private void FixedUpdate()
+    private Vector3 lastInteractionDir;
+
+    private void Update()
+    {
+        HandleMovement();
+        HandleInteracions();
+    }
+
+    private void HandleInteracions()
     {
         Vector2 inputVector = m_GameInput.GetMovementVectorNormalized();
-        Debug.Log("Input "+ inputVector);
+        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
+        float interactDistance = 5f;
+        if(moveDir != Vector3.zero)
+        {
+            lastInteractionDir = moveDir;
+        }
+        Debug.DrawRay(transform.position, moveDir, Color.red);
+        if (Physics.Raycast(transform.position, lastInteractionDir, out RaycastHit raycastHit, interactDistance, layerMask))
+        {
+            Debug.Log(raycastHit.transform.parent.parent.transform);
+            if(raycastHit.transform.parent.parent.transform.TryGetComponent(out ClearCounter clearCounter))
+            {
+                //Debug.Log("Has ClearCount");
+                clearCounter.Interact();
+            }
+        }  
+        else
+        {
+            //Debug.Log("_");
+        }
+    }
+    private void HandleMovement()
+    {
+        Vector2 inputVector = m_GameInput.GetMovementVectorNormalized();
+        //Debug.Log("Input " + inputVector);
         if (Math.Abs(inputVector.x) > 0.5 || Math.Abs(inputVector.y) > 0.5)
         {
             Vector3 move = new Vector3(inputVector.x, 0f, inputVector.y);
@@ -24,7 +57,7 @@ public class Player : MonoBehaviour
             isWalking = move != Vector3.zero;
 
             float moveDistance = Time.deltaTime * PlayerSpeed;
-            Debug.Log("IsWalking" + isWalking + " move " + move + " moveDistance " + moveDistance);
+            //Debug.Log("IsWalking" + isWalking + " move " + move + " moveDistance " + moveDistance);
             bool canMove = !Physics.CapsuleCast(transform.position, transform.position + Vector3.up * playerHeight, playerRadious, move, moveDistance);
             if (!canMove)
             {
@@ -47,12 +80,14 @@ public class Player : MonoBehaviour
             else
             {
                 transform.position += move;
-                Debug.DrawRay(transform.position, move*100, Color.red);
+                Debug.DrawRay(transform.position, move * 100, Color.red);
             }
         }
+        else
+        {
+            isWalking = false;
+        }
     }
-
-
 
     public bool IsWalking()
     {

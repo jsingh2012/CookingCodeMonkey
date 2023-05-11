@@ -29,7 +29,7 @@ public class GameInput : MonoBehaviour
         {
             inputVector.x = 1;
         }*/
-        Debug.Log("inputVector "+ inputVector);
+        //Debug.Log("inputVector "+ inputVector);
         inputVector = inputVector.normalized;
         return inputVector;
 
