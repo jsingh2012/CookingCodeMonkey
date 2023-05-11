@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2037553136}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 9.26, z: 0}
+  m_LocalPosition: {x: 0, y: 9.26, z: 1.82}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d810c79d016194459d8a8f7603957b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tomatoPrefab: {fileID: 3812876574508226176, guid: 81e9fe7b3cd084242a088e945f531f38, type: 3}
+  kitchenObjectSO: {fileID: 11400000, guid: 77d13a7b0419fb042a4920a2b626d2b0, type: 2}
   counterTopPoint: {fileID: 2037553137}
 --- !u!1001 &1257762982543227760
 PrefabInstance:
